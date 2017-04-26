@@ -18,6 +18,7 @@ QObjectHolder::~QObjectHolder() {
     LOGD2("QObjectHolder destructor called for priority=", priority)
 }
 
+// copy constructor
 QObjectHolder::QObjectHolder(const QObjectHolder &qoh2) {
     LOGD2("QObjectHolder COPY Constructor called for priority=", qoh2.priority);
 
@@ -30,7 +31,7 @@ QObjectHolder::QObjectHolder(const QObjectHolder &qoh2) {
 
 }
 
-
+// move constructor
 QObjectHolder::QObjectHolder(QObjectHolder &&other) {
     LOGD2("QObjectHolder Move Constructor called for priority=", other.priority);
 
@@ -38,16 +39,14 @@ QObjectHolder::QObjectHolder(QObjectHolder &&other) {
 
     cpo.Reset(other.isolate_, std::move(other.cpo));
     //cpo.Reset(qoh2.isolate_, qoh2.cpo);
-    //isolate_ = qoh2.isolate_;
+    isolate_ = other.isolate_;
     priority = other.priority;
 
     other.isolate_ = nullptr;
     // Let's not change other's priority, its just an int, and what if other is used again somehow?
-
-
 }
 
-
+// move assignment
 QObjectHolder &QObjectHolder::operator=(QObjectHolder &&other) {
     LOGD("QObjectHolder Move assignment operator called for priority");
     if (this != &other) {
@@ -57,6 +56,7 @@ QObjectHolder &QObjectHolder::operator=(QObjectHolder &&other) {
         // Do not mess with other's priority, it's only an int, nothing gained by changing its value
         LOGD2("Moved QObjectHolder with priorit=", priority);
     }
+    return *this;
 }
 
 
