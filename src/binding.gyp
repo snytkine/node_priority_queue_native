@@ -2,7 +2,7 @@
   "targets": [
     {
       "target_name": "mypq",
-      "sources": [ "mypq.cpp" ],
+      "sources": [ "mypq.cpp", "ObjectHolder.cpp" ],
       "cflags": ["-Wall", "-std=c++11"],
       'xcode_settings': {
         'OTHER_CFLAGS': [

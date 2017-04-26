@@ -10,7 +10,7 @@
 #include <iostream>
 
 
-#define DEBUG 0
+#define DEBUG 1
 
 #if DEBUG
 #define LOGD(a) {std::cerr << "[" << __FILE__ << "][" << __FUNCTION__ << "][Line " << __LINE__ << "] " << a << std::endl;}

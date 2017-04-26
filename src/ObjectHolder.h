@@ -16,11 +16,13 @@ class QObjectHolder {
 public:
 
     QObjectHolder(double p, v8::Isolate *isolate, v8::Local<v8::Object> lo);
+    QObjectHolder(const QObjectHolder &qoh2);
 
     ~QObjectHolder();
 
     CopyablePersistentObject cpo;
     double priority;
+    //v8::Isolate *isolate_;
 
 };
 
