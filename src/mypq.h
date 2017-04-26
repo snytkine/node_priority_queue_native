@@ -22,9 +22,9 @@
 using namespace v8;
 
 
-typedef std::function<bool (QObjectHolder, QObjectHolder)> compareHolder;
+typedef std::function<bool (std::shared_ptr<QObjectHolder>, std::shared_ptr<QObjectHolder>)> compareHolder;
 
-typedef std::priority_queue<QObjectHolder, std::vector<QObjectHolder>, compareHolder> HolderQ;
+typedef std::priority_queue<std::shared_ptr<QObjectHolder>, std::vector<std::shared_ptr<QObjectHolder>>, compareHolder> HolderQ;
 
 class MyPQ : public node::ObjectWrap {
 public:

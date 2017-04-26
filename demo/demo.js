@@ -13,6 +13,10 @@ console.log("PUSHED 6");
 mypq.push({"my" : 3}, 3);
 console.log("PUSHED 3");
 
+
+mypq.push({"my" : 2}, 2);
+console.log("PUSHED 2");
+
 console.log("size: ", mypq.size());
 
 let res = mypq.pop();
@@ -24,3 +28,7 @@ let res2 = mypq.pop();
 console.log("POPPED2: ", JSON.stringify(res2));
 
 console.log("SIZE NOW: ", mypq.size())
+
+console.log("Another pop: ", mypq.pop())
+
+console.log("Another pop: ", mypq.pop())

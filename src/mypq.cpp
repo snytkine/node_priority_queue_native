@@ -51,12 +51,14 @@ void MyPQ::Push(const v8::FunctionCallbackInfo<v8::Value> &args) {
     double d = ln->NumberValue();
     LOGD2("~ Adding to hq with priority=", d);
 
+    //CopyablePersistentObject up;
+    //up.Reset(isolate, lo);
     //QObjectHolder qoh = QObjectHolder(d, isolate, lo);
 
     //LOGD("qoh created");
+    //std::make_shared<QObjectHolder>(d, isolate, lo);
 
-
-    obj->hq->emplace(d, isolate, lo);
+    obj->hq->push(std::make_shared<QObjectHolder>(d, isolate, lo));
     LOGD("Item emplaced");
 }
 
@@ -67,10 +69,13 @@ void MyPQ::Pop(const v8::FunctionCallbackInfo<v8::Value> &args) {
 
     if (obj->hq->size() > 0) {
         LOGD("Inside Pop :: Have items in queue")
-        CopyablePersistentObject cpo = obj->hq->top().cpo;
-        Local<Object> lo = cpo.Get(isolate);
+        //CopyablePersistentObject cpo = obj->hq->top().cpo.Get(isolate);
+        Local<Object> lo = obj->hq->top()->cpo.Get(isolate); //cpo.Get(isolate);
         LOGD("Before hq->pop()")
+
         obj->hq->pop();
+        // call .Reset on cpo because we not going to need it anymore
+        // because it was just gone from the queue!
         args.GetReturnValue().Set(lo);
     } else {
         LOGD("NO ITEMS IN QUEUE")
@@ -184,8 +189,8 @@ void MyPQ::New(const v8::FunctionCallbackInfo<v8::Value> &args) {
 MyPQ::MyPQ(double a, double b, double c)
         : a_(a), b_(b), c_(c) {
 
-    auto compare = [&](const QObjectHolder &lhs, const QObjectHolder &rhs) -> bool {
-        return lhs.priority < rhs.priority;
+    auto compare = [&](const std::shared_ptr<QObjectHolder> &lhs, const std::shared_ptr<QObjectHolder> &rhs) -> bool {
+        return lhs->priority < rhs->priority;
     };
 
     //std::shared_ptr sp;
