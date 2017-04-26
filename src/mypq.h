@@ -9,10 +9,21 @@
 #include <node_object_wrap.h>
 #include <iostream>
 #include <cmath>
+
+
+#include <vector>
+#include <algorithm>
+#include <queue>
+
 #include "bootstrap.h"
+#include "ObjectHolder.h"
 
 using namespace v8;
 
+
+typedef std::function<bool (QObjectHolder, QObjectHolder)> compareHolder;
+
+typedef std::priority_queue<QObjectHolder, std::vector<QObjectHolder>, compareHolder> HolderQ;
 
 class MyPQ : public node::ObjectWrap {
 public:
@@ -31,6 +42,8 @@ private:
     static void SetCoeff(Local<String> property, Local<Value> value, const PropertyCallbackInfo<void>& info);
 
     static v8::Persistent<v8::Function> constructor;
+    HolderQ *hq;
+
     double a_;
     double b_;
     double c_;

@@ -11,13 +11,13 @@
 #import "bootstrap.h"
 
 
-class MyObjectHolder {
+class QObjectHolder {
 
 public:
 
-    MyObjectHolder(double p, v8::Isolate *isolate, v8::Local<v8::Object> lo);
+    QObjectHolder(double p, v8::Isolate *isolate, v8::Local<v8::Object> lo);
 
-    ~MyObjectHolder();
+    ~QObjectHolder();
 
     CopyablePersistentObject cpo;
     double priority;
