@@ -2,6 +2,8 @@
 #include <node_object_wrap.h>
 #include <iostream>
 #include <cmath>
+#include "bootstrap.h"
+
 using namespace std;
 using namespace v8;
 
