@@ -10,7 +10,7 @@
 #include <iostream>
 
 
-#define DEBUG 1
+#define DEBUG 0
 
 #if DEBUG
 #define LOGD(a) {std::cerr << "[" << __FILE__ << "][" << __FUNCTION__ << "][Line " << __LINE__ << "] " << a << std::endl;}
@@ -22,7 +22,7 @@
 
 
 typedef v8::Persistent<v8::Object, v8::CopyablePersistentTraits<v8::Object>> CopyablePersistentObject;
-typedef v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> CopyablePersistentFunction;
+//typedef v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> CopyablePersistentFunction;
 
 
 #endif //HEAP_LIB_BOOTSTRAP_H

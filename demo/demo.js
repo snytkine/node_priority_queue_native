@@ -1,0 +1,1 @@
+const myRouter = require('../src/build/Release/mypq');
