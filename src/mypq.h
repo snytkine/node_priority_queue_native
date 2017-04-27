@@ -48,6 +48,7 @@ private:
 
     static v8::Persistent<v8::Function> constructor;
     std::shared_ptr<HolderQ> hq;
+    v8::Persistent<v8::Function> comparator;
 };
 
 #endif //HEAP_LIB_MYPQ_H
