@@ -8,7 +8,7 @@
 
 #include <node.h>
 #include <v8.h>
-#import "bootstrap.h"
+#include "bootstrap.h"
 
 
 class QObjectHolder {

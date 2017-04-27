@@ -1,9 +1,6 @@
 #include <node.h>
 #include <node_object_wrap.h>
 #include <iostream>
-#include <cmath>
-#include <memory>
-#include <cstdio>
 #include "bootstrap.h"
 #include "ObjectHolder.h"
 #include "mypq.h"
@@ -114,7 +111,6 @@ void MyPQ::New(const v8::FunctionCallbackInfo<v8::Value> &args) {
 
     //
     Isolate *isolate = args.GetIsolate();
-
 
     if (args.IsConstructCall()) {
         // Invoked as constructor

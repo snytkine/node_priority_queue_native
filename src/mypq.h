@@ -8,8 +8,6 @@
 #include <node.h>
 #include <node_object_wrap.h>
 #include <iostream>
-#include <cmath>
-
 
 #include <vector>
 #include <algorithm>
@@ -33,7 +31,9 @@ public:
 private:
     explicit MyPQ();
 
-    ~MyPQ() {}
+    ~MyPQ() {
+        LOGD("~~ MYPQ DESTRUCTOR CALLED ~~")
+    }
 
     static void New(const v8::FunctionCallbackInfo<v8::Value> &args);
 

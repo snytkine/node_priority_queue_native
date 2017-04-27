@@ -56,6 +56,7 @@ console.log("SUM=", sum);
 
 
 let extraOne = mypq.pop();
+
 console.log("EXTRAONE: ", extraOne)
 //console.log("POPPED2: ", JSON.stringify(res2));
 

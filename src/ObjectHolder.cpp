@@ -1,7 +1,7 @@
 //
 // Created by Snytkine, Dmitri (CORP) on 4/25/17.
 //
-#import "bootstrap.h"
+
 #include "ObjectHolder.h"
 
 
@@ -16,6 +16,7 @@ QObjectHolder::QObjectHolder(double p, v8::Isolate *isolate, v8::Local<v8::Objec
 
 QObjectHolder::~QObjectHolder() {
     LOGD2("QObjectHolder destructor called for priority=", priority)
+    cpo.Reset();
 }
 
 // copy constructor
