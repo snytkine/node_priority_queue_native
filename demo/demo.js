@@ -41,6 +41,7 @@ mypq.push({"my" : 1444.2}, 1444.2);
 //let res2 = mypq.pop();
 
 //let len = mypq.size();
+//console.log("First one: ", mypq.top())
 let sum = 0
 while(mypq.size() > 0){
     //console.log("POPPED:",mypq.pop());
@@ -53,6 +54,9 @@ let total = end - start;
 console.log("FINISHED IN ", total);
 console.log("SUM=", sum);
 
+
+let extraOne = mypq.pop();
+console.log("EXTRAONE: ", extraOne)
 //console.log("POPPED2: ", JSON.stringify(res2));
 
 //console.log("SIZE NOW: ", mypq.size())

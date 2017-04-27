@@ -41,8 +41,8 @@ void MyPQ::Pop(const v8::FunctionCallbackInfo<v8::Value> &args) {
 
     if (obj->hq->size() > 0) {
         LOGD("Inside Pop :: Have items in queue")
-        //CopyablePersistentObject cpo = obj->hq->top().cpo.Get(isolate);
-        Local<Object> lo = obj->hq->top()->cpo.Get(isolate); //cpo.Get(isolate);
+
+        Local<Object> lo = obj->hq->top()->cpo.Get(isolate);
         LOGD("Before hq->pop()")
 
         obj->hq->pop();
@@ -51,6 +51,23 @@ void MyPQ::Pop(const v8::FunctionCallbackInfo<v8::Value> &args) {
         args.GetReturnValue().Set(lo);
     } else {
         LOGD("NO ITEMS IN QUEUE")
+    }
+
+}
+
+
+
+void MyPQ::Top(const v8::FunctionCallbackInfo<v8::Value> &args) {
+    Isolate *isolate = args.GetIsolate();
+    MyPQ *obj = Unwrap<MyPQ>(args.Holder());
+
+    if (obj->hq->size() > 0) {
+        LOGD("Inside Top :: Have items in queue")
+
+        Local<Object> lo = obj->hq->top()->cpo.Get(isolate);
+        args.GetReturnValue().Set(lo);
+    } else {
+        LOGD("NO ITEMS IN QUEUE. WILL RETURN UNDEFINED TO TOP")
     }
 
 }
@@ -81,6 +98,7 @@ void MyPQ::Init(v8::Local<v8::Object> exports) {
 
 
     NODE_SET_PROTOTYPE_METHOD(tpl, "push", Push);
+    NODE_SET_PROTOTYPE_METHOD(tpl, "top", Top);
     NODE_SET_PROTOTYPE_METHOD(tpl, "pop", Pop);
     NODE_SET_PROTOTYPE_METHOD(tpl, "size", Size);;
 

@@ -39,17 +39,12 @@ private:
 
     static void Push(const v8::FunctionCallbackInfo<v8::Value> &args);
 
+    static void Top(const v8::FunctionCallbackInfo<v8::Value> &args);
+
     static void Pop(const v8::FunctionCallbackInfo<v8::Value> &args);
 
     static void Size(const v8::FunctionCallbackInfo<v8::Value> &args);
 
-    static void At(const v8::FunctionCallbackInfo<v8::Value> &args);
-
-    static void Roots(const v8::FunctionCallbackInfo<v8::Value> &args);
-
-    static void GetCoeff(Local<String> property, const PropertyCallbackInfo<Value> &info);
-
-    static void SetCoeff(Local<String> property, Local<Value> value, const PropertyCallbackInfo<void> &info);
 
     static v8::Persistent<v8::Function> constructor;
     std::shared_ptr<HolderQ> hq;
