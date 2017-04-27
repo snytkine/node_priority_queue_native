@@ -21,7 +21,7 @@
 #endif
 
 
-//typedef v8::Persistent<v8::Object, v8::CopyablePersistentTraits<v8::Object>> CopyablePersistentObject;
+typedef v8::Persistent<v8::Object, v8::CopyablePersistentTraits<v8::Object>> CopyablePersistent;
 
 typedef v8::UniquePersistent<v8::Object> CopyablePersistentObject;
 //typedef v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> CopyablePersistentFunction;

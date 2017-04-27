@@ -27,9 +27,13 @@ typedef std::priority_queue<std::shared_ptr<QObjectHolder>, std::vector<std::sha
 class MyPQ : public node::ObjectWrap {
 public:
     static void Init(v8::Local<v8::Object> exports);
+    bool hasComparator(){
+        return hasComparator_;
+    }
 
 private:
     explicit MyPQ();
+    explicit MyPQ(Isolate* isolate, Local<Function> cmp);
 
     ~MyPQ() {
         LOGD("~~ MYPQ DESTRUCTOR CALLED ~~")
@@ -48,7 +52,8 @@ private:
 
     static v8::Persistent<v8::Function> constructor;
     std::shared_ptr<HolderQ> hq;
-    v8::Persistent<v8::Function> comparator;
+    bool hasComparator_ = false;
+    //v8::Persistent<v8::Object, v8::CopyablePersistentTraits<v8::Object>> comparator_;
 };
 
 #endif //HEAP_LIB_MYPQ_H
