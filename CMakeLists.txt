@@ -8,6 +8,6 @@ include_directories( /Users/snytkind/projects/node/deps/v8/include /usr/local/Ce
 set(SOURCE_FILES src/mypq.cpp src/bootstrap.h src/ObjectHolder.cpp src/ObjectHolder.h)
 #add_executable(heap_lib  src/main2.cpp)
 
-add_executable("example" src/mypq.cpp src/bootstrap.h src/ObjectHolder.cpp src/ObjectHolder.h src/mypq.h)
+add_executable("example" src/mypq.cpp src/bootstrap.h src/ObjectHolder.cpp src/ObjectHolder.h src/mypq.h src/q_iterator.cpp src/q_iterator.h)
 
 #add_executable(heap_lib  src/main.cpp)

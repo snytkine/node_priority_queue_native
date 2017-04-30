@@ -1,15 +1,12 @@
 const pq = require('../src/build/Release/mypq');
-const objcts = require('./data')
+const makeObjects = require('./data')
 var microtime = require('microtime')
 
 
+//console.log("Objects:", JSON.stringify(makeObjects(50)));
+//return;
 //console.log("BEFORE CONSTRUCTOR");
 
-let mypq = new pq.PriorityQueueNative(function (lhs, rhs) {
-    return lhs.val < rhs.val
-});
-
-mypq = new pq.PriorityQueueNative();
 //console.log("AFTER CONSTRUCTOR");
 
 /*mypq.push({"my": 1}, 1);
@@ -33,31 +30,53 @@ let inner = 0;
 
 for (let i = 0; i < 1; i += 1) {
 
-    objcts.forEach(o => mypq.push(o, o.val));
+    let mypq = new pq.PriorityQueueNative(function (lhs, rhs) {
+        //console.log("Called comparator with lhs:", lhs.val, " rhs: ", rhs.val)
+        return lhs.val < rhs.val
+    });
 
-    while (mypq.size() > 0) {
+    let objcts = makeObjects(50);
+    //mypq = new pq.PriorityQueueNative();
+    objcts.forEach(o => mypq.push(o));
+
+    let it = mypq.iter();
+    let done = false;
+
+    let g = it.next();
+    console.log("=====  G:", JSON.stringify(g));
+
+    g = it.next();
+    console.log("======= G:", JSON.stringify(g));
+
+    while(!done){
+        let n = it.next();
+        done = n.done;
+        console.log("N: ", JSON.stringify(n.value));
+    }
+
+    /*while (mypq.size() > 0) {
         //console.log("POPPED:",mypq.pop());
         let g = mypq.pop();
         //console.log(g.val)
         sum += g.val;
         inner += 1;
-    }
+    }*/
 
     looped += 1;
 }
 
 let end = microtime.now();
 let total = end - start;
-console.log("FINISHED PUSH/POP ", objcts.length, "total time: ", total, " Looped: ", looped, "inner: ", inner);
+console.log("FINISHED PUSH/POP objects per loop:", 50, "total time: ", total, " Looped: ", looped, "inner: ", inner);
 console.log("SUM=", sum);
 
 
-let extraOne = mypq.pop();
+//let extraOne = mypq.pop();
 
-console.log("EXTRAONE: ", extraOne);
+//console.log("EXTRAONE: ", extraOne);
 
-let myRes = objcts.sort( (l, r) => r.val > l.val ).reduce((acc, o) => acc += o.val, 0.0);
-console.log("myRes=", myRes)
+//let myRes = objcts.sort( (l, r) => r.val > l.val ).reduce((acc, o) => acc += o.val, 0.0);
+//console.log("myRes=", myRes)
 //console.log("POPPED2: ", JSON.stringify(res2));
 
 //console.log("SIZE NOW: ", mypq.size())

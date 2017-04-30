@@ -16,19 +16,25 @@
 
 #include "bootstrap.h"
 #include "ObjectHolder.h"
+#include "q_iterator.h"
 
 using namespace v8;
 
 
-typedef std::function<bool(std::shared_ptr<QObjectHolder>, std::shared_ptr<QObjectHolder>)> compareHolder;
 
-typedef std::priority_queue<std::shared_ptr<QObjectHolder>, std::vector<std::shared_ptr<QObjectHolder>>, compareHolder> HolderQ;
+
 
 class MyPQ : public node::ObjectWrap {
 public:
     static void Init(v8::Local<v8::Object> exports);
+    //static v8::Persistent<v8::Function> iter_ctor;
+
     bool hasComparator(){
         return hasComparator_;
+    }
+
+    std::shared_ptr<HolderQ> getQ(){
+        return hq_;
     }
 
 private:
@@ -49,9 +55,12 @@ private:
 
     static void Size(const v8::FunctionCallbackInfo<v8::Value> &args);
 
+    static void GetIterator(const v8::FunctionCallbackInfo<v8::Value> &args);
+
 
     static v8::Persistent<v8::Function> constructor;
-    std::shared_ptr<HolderQ> hq;
+
+    std::shared_ptr<HolderQ> hq_;
     bool hasComparator_ = false;
     //v8::Persistent<v8::Object, v8::CopyablePersistentTraits<v8::Object>> comparator_;
 };

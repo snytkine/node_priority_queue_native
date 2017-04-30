@@ -4,7 +4,7 @@
 
 let makeObj = function (num) {
     return {
-        "val": num
+        "val": Math.floor(Math.random() * 10000)
     }
 }
 
@@ -15,6 +15,10 @@ let nums = [
 
 //309, 2001,  320, 523,
 
-let objcts = nums.map(n => makeObj(n));
+//let objcts = nums.map(n => makeObj(n));
 
-module.exports = objcts;
+let makeObjects = (num) => {
+    return Array.from({length: num}, () => makeObj());
+}
+
+module.exports = makeObjects;

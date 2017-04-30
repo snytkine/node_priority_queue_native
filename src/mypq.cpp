@@ -8,6 +8,7 @@
 using namespace v8;
 
 Persistent<Function> MyPQ::constructor;
+//Persistent<Function> MyPQ::iter_ctor;
 
 void MyPQ::Push(const v8::FunctionCallbackInfo<v8::Value> &args) {
     Isolate *isolate = args.GetIsolate();
@@ -31,10 +32,10 @@ void MyPQ::Push(const v8::FunctionCallbackInfo<v8::Value> &args) {
 
         Local<Number> ln = args[1]->ToNumber(isolate);
         d = ln->NumberValue();
-        LOGD2("~ Adding to hq with priority=", d);
+        LOGD2("~ Adding to hq_ with priority=", d);
     }
 
-    obj->hq->push(std::make_shared<QObjectHolder>(d, isolate, lo));
+    obj->hq_->push(std::make_shared<QObjectHolder>(d, isolate, lo));
     LOGD("Item pushed to queue");
 }
 
@@ -43,16 +44,27 @@ void MyPQ::Pop(const v8::FunctionCallbackInfo<v8::Value> &args) {
     Isolate *isolate = args.GetIsolate();
     MyPQ *obj = Unwrap<MyPQ>(args.Holder());
 
-    if (obj->hq->size() > 0) {
+    // Very important to check size first
+    // if queue is empty then calling top and pop
+    // will result in segmentation fault
+    // wrapping this inside native try/catch will not help
+    if (obj->hq_->size() > 0) {
         LOGD("Inside Pop :: Have items in queue")
+        // if we have intermediate copy obj->hq_->top()
+        // and then use it to Get(isolate) then destructor may be called on that intermediate UniquePersistent
+        // because it's not moved, its copied, and then it will reset the actual stored object in v8
+        // if we want to use intermediate object then we must use move assignment instead of copy assignment
 
+        Local<Object> lo = obj->hq_->top()->cpo.Get(isolate);
+        LOGD("Before hq_->pop()")
 
-        Local<Object> lo = obj->hq->top()->cpo.Get(isolate);
-        LOGD("Before hq->pop()")
-
-        obj->hq->pop();
+        obj->hq_->pop();
         // call .Reset on cpo because we not going to need it anymore
         // because it was just gone from the queue!
+        // Except that in case of UniquePersistent there is already a destructor that calls Reset and it will be called
+        // when element is removed from que. To be 100% safe we can check if cpo.IsEmpty()
+        // but that would only work with intermediate objects.
+
         args.GetReturnValue().Set(lo);
 
     } else {
@@ -67,10 +79,10 @@ void MyPQ::Top(const v8::FunctionCallbackInfo<v8::Value> &args) {
     Isolate *isolate = args.GetIsolate();
     MyPQ *obj = Unwrap<MyPQ>(args.Holder());
 
-    if (obj->hq->size() > 0) {
+    if (obj->hq_->size() > 0) {
         LOGD("Inside Top :: Have items in queue")
 
-        Local<Object> lo = obj->hq->top()->cpo.Get(isolate);
+        Local<Object> lo = obj->hq_->top()->cpo.Get(isolate);
         args.GetReturnValue().Set(lo);
     } else {
         LOGD("NO ITEMS IN QUEUE. WILL RETURN UNDEFINED TO TOP")
@@ -85,7 +97,7 @@ void MyPQ::Size(const v8::FunctionCallbackInfo<v8::Value> &args) {
 
 
     LOGD("Looking for size")
-    size_t sz = obj->hq->size();
+    size_t sz = obj->hq_->size();
 
     args.GetReturnValue().Set(Number::New(isolate, sz));
 
@@ -105,7 +117,9 @@ void MyPQ::Init(v8::Local<v8::Object> exports) {
     NODE_SET_PROTOTYPE_METHOD(tpl, "push", Push);
     NODE_SET_PROTOTYPE_METHOD(tpl, "top", Top);
     NODE_SET_PROTOTYPE_METHOD(tpl, "pop", Pop);
-    NODE_SET_PROTOTYPE_METHOD(tpl, "size", Size);;
+    NODE_SET_PROTOTYPE_METHOD(tpl, "size", Size);
+
+    NODE_SET_PROTOTYPE_METHOD(tpl, "iter", GetIterator);
 
     constructor.Reset(isolate, tpl->GetFunction());
     exports->Set(String::NewFromUtf8(isolate, "PriorityQueueNative"),
@@ -155,12 +169,12 @@ MyPQ::MyPQ() {
         //return ret;
     };
 
-    hq = std::make_shared<HolderQ>(compare);
+    hq_ = std::make_shared<HolderQ>(compare);
 }
 
 
 MyPQ::MyPQ(Isolate *isolate, Local<Function> cmp) {
-
+    HandleScope handle_scope(isolate);
     LOGD("Setting up comparotor")
     if (cmp.IsEmpty()) {
         LOGD("cmp is EMPTY!");
@@ -188,12 +202,15 @@ MyPQ::MyPQ(Isolate *isolate, Local<Function> cmp) {
         Local<Function> fn = Local<Function>::Cast(g);
         LOGD("CP AFTER CAST")
         Handle<Value> argv[2];
+
         Local<Object> o1 = lhs->cpo.Get(isolate);
         argv[0] = o1;
         LOGD("AFTER ARG0")
+
         Local<Object> o2 = rhs->cpo.Get(isolate);
         argv[1] = o2;
         LOGD("ADTER ARG2")
+
         MaybeLocal<Value> res = fn->Call(Null(isolate), 2, argv);
         if (res.IsEmpty()) {
             LOGD("!!!!!!!!!!!!!! BAD FUNCTION CALL. No RESULT !!!!!!!!")
@@ -207,11 +224,25 @@ MyPQ::MyPQ(Isolate *isolate, Local<Function> cmp) {
 
     };
 
-    hq = std::make_shared<HolderQ>(compare);
+    hq_ = std::make_shared<HolderQ>(compare);
+}
+
+void MyPQ::GetIterator(const v8::FunctionCallbackInfo<v8::Value> &args) {
+
+    Isolate *isolate = args.GetIsolate();
+
+    //CppRouter *obj = node::ObjectWrap::Unwrap<CppRouter>(args.Holder());
+
+    Local<Value> argv[1] = {args.Holder()};
+
+    Local<Function> cons = Local<Function>::New(isolate, QIter::ictor);
+    args.GetReturnValue().Set(cons->NewInstance(1, argv));
+
 }
 
 void InitAll(Local<Object> exports) {
     MyPQ::Init(exports);
+    QIter::Init(exports);
 }
 
 NODE_MODULE(mypq, InitAll)

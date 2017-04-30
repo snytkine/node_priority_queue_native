@@ -7,6 +7,9 @@
 
 
 #include <node.h>
+#include <iostream>
+#include <queue>
+#include <vector>
 #include <v8.h>
 #include "bootstrap.h"
 
@@ -30,5 +33,8 @@ public:
 
 };
 
+
+typedef std::function<bool(std::shared_ptr<QObjectHolder>, std::shared_ptr<QObjectHolder>)> compareHolder;
+typedef std::priority_queue<std::shared_ptr<QObjectHolder>, std::vector<std::shared_ptr<QObjectHolder>>, compareHolder> HolderQ;
 
 #endif //HEAP_LIB_OBJECTHOLDER_H

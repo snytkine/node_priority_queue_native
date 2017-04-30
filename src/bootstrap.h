@@ -10,7 +10,11 @@
 #include <iostream>
 
 
-#define DEBUG 0
+#define DEBUG 1
+
+static const char ITER_NEXT[] = "next";
+static const char ITER_VALUE[] = "value";
+static const char ITER_DONE[] = "done";
 
 #if DEBUG
 #define LOGD(a) {std::cerr << "[" << __FILE__ << "][" << __FUNCTION__ << "][Line " << __LINE__ << "] " << a << std::endl;}
