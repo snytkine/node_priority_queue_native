@@ -1,0 +1,21 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "lib": ["es2015", "es2015.collection", "es2015.core", "es6", "es2016.array.include"],
+    "outDir": "build",
+    "sourceMap": true,
+    "removeComments": true,
+    "declaration": true,
+    "declarationDir": "build/types",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "exclude":[
+    "node_modules",
+    "build",
+    "sandbox",
+    "*.js"
+  ]
+}

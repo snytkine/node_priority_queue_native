@@ -2,7 +2,7 @@
   "targets": [
     {
       "target_name": "priorityqueue_native",
-      "sources": [ "priorityqueue_native.cpp", "ObjectHolder.cpp"],
+      "sources": [ "priorityqueue_native.cpp", "ObjectHolder.cpp", "index.d.ts"],
       "cflags": ["-Wall", "-std=c++11"],
       'xcode_settings': {
         'OTHER_CFLAGS': [

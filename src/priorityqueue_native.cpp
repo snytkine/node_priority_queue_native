@@ -82,7 +82,6 @@ void PriorityQ::Init(v8::Local<v8::Object> exports) {
     tpl->SetClassName(String::NewFromUtf8(isolate, "PriorityQueueNative"));
     tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
-
     NODE_SET_PROTOTYPE_METHOD(tpl, "push", Push);
     NODE_SET_PROTOTYPE_METHOD(tpl, "top", Top);
     NODE_SET_PROTOTYPE_METHOD(tpl, "pop", Pop);
@@ -92,7 +91,10 @@ void PriorityQ::Init(v8::Local<v8::Object> exports) {
     NODE_SET_ITERATOR_METHOD(tpl, GetIterator);
 
     constructor.Reset(isolate, tpl->GetFunction());
-    exports->Set(String::NewFromUtf8(isolate, "PriorityQueueNative"),
+    exports->Set(String::NewFromUtf8(isolate, "PriorityQueue"),
+                 tpl->GetFunction());
+
+    exports->Set(String::NewFromUtf8(isolate, "PriorityQueueCompare"),
                  tpl->GetFunction());
 
 }
