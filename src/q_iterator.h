@@ -37,10 +37,13 @@ public:
 
 private:
     explicit QIter() {};
+    explicit QIter(std::shared_ptr<HolderQ> hq): hq_(hq) {};
 
     static void New(const v8::FunctionCallbackInfo<v8::Value> &args);
 
     static void Next(const v8::FunctionCallbackInfo<v8::Value> &args);
+
+    static void Return(const v8::FunctionCallbackInfo<v8::Value> &args);
 
     std::shared_ptr<HolderQ> hq_;
 };

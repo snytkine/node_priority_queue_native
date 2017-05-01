@@ -119,7 +119,7 @@ void MyPQ::Init(v8::Local<v8::Object> exports) {
     NODE_SET_PROTOTYPE_METHOD(tpl, "pop", Pop);
     NODE_SET_PROTOTYPE_METHOD(tpl, "size", Size);
 
-    NODE_SET_PROTOTYPE_METHOD(tpl, "iter", GetIterator);
+    NODE_SET_ITERATOR_METHOD(tpl, GetIterator);
 
     constructor.Reset(isolate, tpl->GetFunction());
     exports->Set(String::NewFromUtf8(isolate, "PriorityQueueNative"),
@@ -236,7 +236,11 @@ void MyPQ::GetIterator(const v8::FunctionCallbackInfo<v8::Value> &args) {
     Local<Value> argv[1] = {args.Holder()};
 
     Local<Function> cons = Local<Function>::New(isolate, QIter::ictor);
-    args.GetReturnValue().Set(cons->NewInstance(1, argv));
+    MaybeLocal<Object> maybeit = cons->NewInstance(isolate->GetCurrentContext(), 1, argv);
+    if(!maybeit.IsEmpty()){
+        args.GetReturnValue().Set(maybeit.ToLocalChecked());
+    }
+
 
 }
 

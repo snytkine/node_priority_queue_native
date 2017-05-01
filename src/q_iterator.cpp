@@ -49,6 +49,7 @@ void QIter::Init(v8::Local<v8::Object> exports) {
 
 
     NODE_SET_PROTOTYPE_METHOD(tpl, "next", Next);
+    NODE_SET_PROTOTYPE_METHOD(tpl, "return", Return);
 
     ictor.Reset(isolate, tpl->GetFunction());
     // We don't add this constructor to exports because this class is not
@@ -66,16 +67,22 @@ void QIter::New(const v8::FunctionCallbackInfo<v8::Value> &args) {
             Local<Object> pq = args[0]->ToObject(isolate);
             MyPQ *lpq = Unwrap<MyPQ>(pq);
 
-            obj = new QIter();
-            obj->setQ(lpq->getQ());
+            obj = new QIter(lpq->getQ());
+            obj->Wrap(args.This());
+            args.GetReturnValue().Set(args.This());
         } else {
             LOGD("ITER object not passed in JS Constructor call")
         }
-
-        obj->Wrap(args.This());
-        args.GetReturnValue().Set(args.This());
     } else {
 
         LOGD("ITER NOT CONSTRUCTOR CALL")
     }
+}
+
+void QIter::Return(const v8::FunctionCallbackInfo<v8::Value> &args) {
+    LOGD("^^^^^^^^^^^^^ ITER::Return called ^^^^^^^^^^^^^");
+    Isolate *isolate = args.GetIsolate();
+    Local<Object> retObj = Object::New(isolate);
+    retObj->Set(String::NewFromUtf8(isolate, ITER_DONE), Boolean::New(isolate, true));
+    args.GetReturnValue().Set(retObj);
 }

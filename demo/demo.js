@@ -39,20 +39,30 @@ for (let i = 0; i < 1; i += 1) {
     //mypq = new pq.PriorityQueueNative();
     objcts.forEach(o => mypq.push(o));
 
-    let it = mypq.iter();
-    let done = false;
+    //let it = mypq[Symbol.iterator]();
+    //let done = false;
 
-    let g = it.next();
-    console.log("=====  G:", JSON.stringify(g));
+   // let g = it.next();
+   // console.log("=====  G:", JSON.stringify(g));
 
-    g = it.next();
-    console.log("======= G:", JSON.stringify(g));
+    //g = it.next();
+    //console.log("======= G:", JSON.stringify(g));
 
-    while(!done){
+    /*while(!done){
         let n = it.next();
         done = n.done;
         console.log("N: ", JSON.stringify(n.value));
+    }*/
+
+    for(let v of mypq){
+        console.log("=== N: ", JSON.stringify(v.val));
+        if(v && v.val < 1000){
+            break;
+        }
     }
+
+    let g = mypq.pop();
+    console.log("======= G:", JSON.stringify(g));
 
     /*while (mypq.size() > 0) {
         //console.log("POPPED:",mypq.pop());
