@@ -7,18 +7,17 @@
 
 using namespace v8;
 
-Persistent<Function> MyPQ::constructor;
-//Persistent<Function> MyPQ::iter_ctor;
+Persistent<Function> PriorityQ::constructor;
 
-void MyPQ::Push(const v8::FunctionCallbackInfo<v8::Value> &args) {
+void PriorityQ::Push(const v8::FunctionCallbackInfo<v8::Value> &args) {
     Isolate *isolate = args.GetIsolate();
-    MyPQ *obj = Unwrap<MyPQ>(args.Holder());
+    PriorityQ *obj = Unwrap<PriorityQ>(args.Holder());
     double d = 0;
     Local<Object> lo = args[0]->ToObject(isolate);
     // Check for second arg requirements
     // its required ONLY if there is no comparator
     if (!obj->hasComparator()) {
-        if (args.Length() < 2) {
+        /*if (args.Length() < 2) {
             isolate->ThrowException(v8::Exception::TypeError(
                     String::NewFromUtf8(isolate,
                                         "PriorityQueue instantiated without comparator function. Must pass a priority number as second argument to this function")));
@@ -28,7 +27,7 @@ void MyPQ::Push(const v8::FunctionCallbackInfo<v8::Value> &args) {
             isolate->ThrowException(v8::Exception::TypeError(
                     String::NewFromUtf8(isolate, "Second parameter must be a number")));
 
-        }
+        }*/
 
         Local<Number> ln = args[1]->ToNumber(isolate);
         d = ln->NumberValue();
@@ -40,9 +39,9 @@ void MyPQ::Push(const v8::FunctionCallbackInfo<v8::Value> &args) {
 }
 
 
-void MyPQ::Pop(const v8::FunctionCallbackInfo<v8::Value> &args) {
+void PriorityQ::Pop(const v8::FunctionCallbackInfo<v8::Value> &args) {
     Isolate *isolate = args.GetIsolate();
-    MyPQ *obj = Unwrap<MyPQ>(args.Holder());
+    PriorityQ *obj = Unwrap<PriorityQ>(args.Holder());
 
     // Very important to check size first
     // if queue is empty then calling top and pop
@@ -75,9 +74,9 @@ void MyPQ::Pop(const v8::FunctionCallbackInfo<v8::Value> &args) {
 }
 
 
-void MyPQ::Top(const v8::FunctionCallbackInfo<v8::Value> &args) {
+void PriorityQ::Top(const v8::FunctionCallbackInfo<v8::Value> &args) {
     Isolate *isolate = args.GetIsolate();
-    MyPQ *obj = Unwrap<MyPQ>(args.Holder());
+    PriorityQ *obj = Unwrap<PriorityQ>(args.Holder());
 
     if (obj->hq_->size() > 0) {
         LOGD("Inside Top :: Have items in queue")
@@ -91,9 +90,9 @@ void MyPQ::Top(const v8::FunctionCallbackInfo<v8::Value> &args) {
 }
 
 
-void MyPQ::Size(const v8::FunctionCallbackInfo<v8::Value> &args) {
+void PriorityQ::Size(const v8::FunctionCallbackInfo<v8::Value> &args) {
     Isolate *isolate = args.GetIsolate();
-    MyPQ *obj = Unwrap<MyPQ>(args.Holder());
+    PriorityQ *obj = Unwrap<PriorityQ>(args.Holder());
 
 
     LOGD("Looking for size")
@@ -104,7 +103,7 @@ void MyPQ::Size(const v8::FunctionCallbackInfo<v8::Value> &args) {
 }
 
 
-void MyPQ::Init(v8::Local<v8::Object> exports) {
+void PriorityQ::Init(v8::Local<v8::Object> exports) {
 
     Isolate *isolate = exports->GetIsolate();
 
@@ -127,18 +126,18 @@ void MyPQ::Init(v8::Local<v8::Object> exports) {
 
 }
 
-void MyPQ::New(const v8::FunctionCallbackInfo<v8::Value> &args) {
+void PriorityQ::New(const v8::FunctionCallbackInfo<v8::Value> &args) {
 
     Isolate *isolate = args.GetIsolate();
 
     if (args.IsConstructCall()) {
-        MyPQ *obj;
+        PriorityQ *obj;
         // Invoked as constructor
         if (args[0]->IsFunction()) {
             Local<Function> cmp = Local<Function>::Cast(args[0]);
-            obj = new MyPQ(isolate, cmp);
+            obj = new PriorityQ(isolate, cmp);
         } else {
-            obj = new MyPQ();
+            obj = new PriorityQ();
         }
 
         obj->Wrap(args.This());
@@ -156,7 +155,7 @@ void MyPQ::New(const v8::FunctionCallbackInfo<v8::Value> &args) {
 
 }
 
-MyPQ::MyPQ() {
+PriorityQ::PriorityQ() {
 
     auto compare = [&](const std::shared_ptr<QObjectHolder> &lhs, const std::shared_ptr<QObjectHolder> &rhs) -> bool {
 
@@ -173,7 +172,7 @@ MyPQ::MyPQ() {
 }
 
 
-MyPQ::MyPQ(Isolate *isolate, Local<Function> cmp) {
+PriorityQ::PriorityQ(Isolate *isolate, Local<Function> cmp) {
     HandleScope handle_scope(isolate);
     LOGD("Setting up comparotor")
     if (cmp.IsEmpty()) {
@@ -227,7 +226,7 @@ MyPQ::MyPQ(Isolate *isolate, Local<Function> cmp) {
     hq_ = std::make_shared<HolderQ>(compare);
 }
 
-void MyPQ::GetIterator(const v8::FunctionCallbackInfo<v8::Value> &args) {
+void PriorityQ::GetIterator(const v8::FunctionCallbackInfo<v8::Value> &args) {
 
     Isolate *isolate = args.GetIsolate();
 
@@ -245,7 +244,7 @@ void MyPQ::GetIterator(const v8::FunctionCallbackInfo<v8::Value> &args) {
 }
 
 void InitAll(Local<Object> exports) {
-    MyPQ::Init(exports);
+    PriorityQ::Init(exports);
     QIter::Init(exports);
 }
 

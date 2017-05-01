@@ -13,7 +13,7 @@ let sum = 0;
 let looped = 0;
 let inner = 0;
 
-for (let i = 0; i < 3; i += 1) {
+for (let i = 0; i < 1; i += 1) {
 
 
     var x = new FastPriorityQueue(function (lhs, rhs) {

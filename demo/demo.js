@@ -30,14 +30,14 @@ let inner = 0;
 
 for (let i = 0; i < 1; i += 1) {
 
-    let mypq = new pq.PriorityQueueNative(function (lhs, rhs) {
+    /*let mypq = new pq.PriorityQueueNative(function (lhs, rhs) {
         //console.log("Called comparator with lhs:", lhs.val, " rhs: ", rhs.val)
         return lhs.val < rhs.val
-    });
+    });*/
 
     let objcts = makeObjects(50);
-    //mypq = new pq.PriorityQueueNative();
-    objcts.forEach(o => mypq.push(o));
+    let mypq = new pq.PriorityQueueNative();
+    objcts.forEach(o => mypq.push(o, o.val));
 
     //let it = mypq[Symbol.iterator]();
     //let done = false;
@@ -55,14 +55,11 @@ for (let i = 0; i < 1; i += 1) {
     }*/
 
     for(let v of mypq){
-        console.log("=== N: ", JSON.stringify(v.val));
-        if(v && v.val < 1000){
-            break;
-        }
+        sum+=v.val;
     }
 
-    let g = mypq.pop();
-    console.log("======= G:", JSON.stringify(g));
+    //let g = mypq.pop();
+    //console.log("======= G:", JSON.stringify(g));
 
     /*while (mypq.size() > 0) {
         //console.log("POPPED:",mypq.pop());

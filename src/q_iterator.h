@@ -30,11 +30,6 @@ public:
 
     static void Init(v8::Local<v8::Object> exports);
 
-
-    void setQ(std::shared_ptr<HolderQ> hq) {
-        hq_ = hq;
-    }
-
 private:
     explicit QIter() {};
     explicit QIter(std::shared_ptr<HolderQ> hq): hq_(hq) {};

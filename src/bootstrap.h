@@ -23,7 +23,7 @@ inline void NODE_SET_ITERATOR_METHOD(v8::Local<v8::FunctionTemplate> recv,
     recv->PrototypeTemplate()->Set(v8::Symbol::GetIterator(isolate), t);
 }
 
-#define DEBUG 1
+#define DEBUG 0
 
 static const char ITER_NEXT[] = "next";
 static const char ITER_VALUE[] = "value";

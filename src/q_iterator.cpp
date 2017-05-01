@@ -65,7 +65,7 @@ void QIter::New(const v8::FunctionCallbackInfo<v8::Value> &args) {
         // Invoked as constructor
         if (args[0]->IsObject()) {
             Local<Object> pq = args[0]->ToObject(isolate);
-            MyPQ *lpq = Unwrap<MyPQ>(pq);
+            PriorityQ *lpq = Unwrap<PriorityQ>(pq);
 
             obj = new QIter(lpq->getQ());
             obj->Wrap(args.This());

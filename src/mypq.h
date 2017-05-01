@@ -24,10 +24,9 @@ using namespace v8;
 
 
 
-class MyPQ : public node::ObjectWrap {
+class PriorityQ : public node::ObjectWrap {
 public:
     static void Init(v8::Local<v8::Object> exports);
-    //static v8::Persistent<v8::Function> iter_ctor;
 
     bool hasComparator(){
         return hasComparator_;
@@ -38,10 +37,10 @@ public:
     }
 
 private:
-    explicit MyPQ();
-    explicit MyPQ(Isolate* isolate, Local<Function> cmp);
+    explicit PriorityQ();
+    explicit PriorityQ(Isolate* isolate, Local<Function> cmp);
 
-    ~MyPQ() {
+    ~PriorityQ() {
         LOGD("~~ MYPQ DESTRUCTOR CALLED ~~")
     }
 
@@ -62,7 +61,6 @@ private:
 
     std::shared_ptr<HolderQ> hq_;
     bool hasComparator_ = false;
-    //v8::Persistent<v8::Object, v8::CopyablePersistentTraits<v8::Object>> comparator_;
 };
 
 #endif //HEAP_LIB_MYPQ_H
