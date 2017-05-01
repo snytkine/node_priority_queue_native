@@ -159,13 +159,7 @@ PriorityQ::PriorityQ() {
 
     auto compare = [&](const std::shared_ptr<QObjectHolder> &lhs, const std::shared_ptr<QObjectHolder> &rhs) -> bool {
 
-        //LOGD("CALLING NATIVE COMPATATOR")
         return lhs->priority < rhs->priority;
-        //LOGD2("Result of comparotor call is ~~~~~~~~~ ", ret)
-        //LOGD2("LHS=", lhs->priority)
-        //LOGD2("RHS=", rhs->priority)
-
-        //return ret;
     };
 
     hq_ = std::make_shared<HolderQ>(compare);
@@ -216,9 +210,6 @@ PriorityQ::PriorityQ(Isolate *isolate, Local<Function> cmp) {
             return false;
         } else {
             return res.ToLocalChecked()->BooleanValue();
-            //LOGD2("Result of comparotor call is ~~~~~~~~~ ", ret);
-
-            //return ret;
         }
 
     };
@@ -226,11 +217,10 @@ PriorityQ::PriorityQ(Isolate *isolate, Local<Function> cmp) {
     hq_ = std::make_shared<HolderQ>(compare);
 }
 
+
 void PriorityQ::GetIterator(const v8::FunctionCallbackInfo<v8::Value> &args) {
 
     Isolate *isolate = args.GetIsolate();
-
-    //CppRouter *obj = node::ObjectWrap::Unwrap<CppRouter>(args.Holder());
 
     Local<Value> argv[1] = {args.Holder()};
 
@@ -239,7 +229,6 @@ void PriorityQ::GetIterator(const v8::FunctionCallbackInfo<v8::Value> &args) {
     if(!maybeit.IsEmpty()){
         args.GetReturnValue().Set(maybeit.ToLocalChecked());
     }
-
 
 }
 

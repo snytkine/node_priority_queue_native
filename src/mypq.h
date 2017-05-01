@@ -21,9 +21,6 @@
 using namespace v8;
 
 
-
-
-
 class PriorityQ : public node::ObjectWrap {
 public:
     static void Init(v8::Local<v8::Object> exports);
