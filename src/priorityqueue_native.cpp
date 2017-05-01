@@ -3,7 +3,7 @@
 #include <iostream>
 #include "bootstrap.h"
 #include "ObjectHolder.h"
-#include "node_pq.h"
+#include "priorityqueue_native.h"
 
 using namespace v8;
 

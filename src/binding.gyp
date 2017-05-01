@@ -1,8 +1,8 @@
 {
   "targets": [
     {
-      "target_name": "node_pq",
-      "sources": [ "node_pq.cpp", "ObjectHolder.cpp"],
+      "target_name": "priorityqueue_native",
+      "sources": [ "priorityqueue_native.cpp", "ObjectHolder.cpp"],
       "cflags": ["-Wall", "-std=c++11"],
       'xcode_settings': {
         'OTHER_CFLAGS': [

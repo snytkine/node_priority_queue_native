@@ -6,7 +6,7 @@ const FastPriorityQueue = require('fastpriorityqueue');
 const makeObjects = require('./data');
 var microtime = require('microtime');
 
-
+let objcts = makeObjects(50);
 let start = microtime.now();
 
 let sum = 0;
@@ -19,7 +19,7 @@ for (let i = 0; i < 1; i += 1) {
     var x = new FastPriorityQueue(function (lhs, rhs) {
         return lhs.val > rhs.val
     })
-    let objcts = makeObjects(50);
+
     objcts.forEach(o => x.add(o));
 
 
