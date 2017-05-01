@@ -16,32 +16,30 @@
 
 #include "bootstrap.h"
 #include "ObjectHolder.h"
-#include "q_iterator.h"
+
 
 using namespace v8;
 
 
 class PriorityQ : public node::ObjectWrap {
+
 public:
     static void Init(v8::Local<v8::Object> exports);
 
-    bool hasComparator(){
-        return hasComparator_;
-    }
-
-    std::shared_ptr<HolderQ> getQ(){
-        return hq_;
-    }
-
 private:
     explicit PriorityQ();
-    explicit PriorityQ(Isolate* isolate, Local<Function> cmp);
+
+    explicit PriorityQ(Isolate *isolate, Local<Function> cmp);
 
     ~PriorityQ() {
-        LOGD("~~ MYPQ DESTRUCTOR CALLED ~~")
+        LOGD("~~ NODE_PQ DESTRUCTOR CALLED ~~")
     }
 
     static void New(const v8::FunctionCallbackInfo<v8::Value> &args);
+
+    static void Next(const v8::FunctionCallbackInfo<v8::Value> &args);
+
+    static void Return(const v8::FunctionCallbackInfo<v8::Value> &args);
 
     static void Push(const v8::FunctionCallbackInfo<v8::Value> &args);
 
@@ -55,9 +53,10 @@ private:
 
 
     static v8::Persistent<v8::Function> constructor;
+    bool hasComparator_ = false;
 
     std::shared_ptr<HolderQ> hq_;
-    bool hasComparator_ = false;
+
 };
 
 #endif //HEAP_LIB_MYPQ_H

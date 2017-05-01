@@ -1,8 +1,8 @@
 {
   "targets": [
     {
-      "target_name": "mypq",
-      "sources": [ "mypq.cpp", "ObjectHolder.cpp", "q_iterator.h", "q_iterator.cpp" ],
+      "target_name": "node_pq",
+      "sources": [ "node_pq.cpp", "ObjectHolder.cpp"],
       "cflags": ["-Wall", "-std=c++11"],
       'xcode_settings': {
         'OTHER_CFLAGS': [

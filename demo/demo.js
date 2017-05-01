@@ -1,4 +1,4 @@
-const pq = require('../src/build/Release/mypq');
+const pq = require('../src/build/Release/node_pq');
 const makeObjects = require('./data')
 var microtime = require('microtime')
 
@@ -21,7 +21,7 @@ var microtime = require('microtime')
  mypq.push({"my": 444.2}, 444.2);
  */
 
-
+let objcts = makeObjects(50);
 let start = microtime.now();
 
 let sum = 0.0;
@@ -31,43 +31,49 @@ let inner = 0;
 for (let i = 0; i < 1; i += 1) {
 
     /*let mypq = new pq.PriorityQueueNative(function (lhs, rhs) {
-        //console.log("Called comparator with lhs:", lhs.val, " rhs: ", rhs.val)
-        return lhs.val < rhs.val
-    });*/
+     //console.log("Called comparator with lhs:", lhs.val, " rhs: ", rhs.val)
+     return lhs.val < rhs.val
+     });*/
 
-    let objcts = makeObjects(50);
+
     let mypq = new pq.PriorityQueueNative();
     objcts.forEach(o => mypq.push(o, o.val));
 
     //let it = mypq[Symbol.iterator]();
     //let done = false;
 
-   // let g = it.next();
-   // console.log("=====  G:", JSON.stringify(g));
+    // let g = it.next();
+    // console.log("=====  G:", JSON.stringify(g));
 
     //g = it.next();
     //console.log("======= G:", JSON.stringify(g));
 
     /*while(!done){
-        let n = it.next();
-        done = n.done;
-        console.log("N: ", JSON.stringify(n.value));
-    }*/
+     let n = it.next();
+     done = n.done;
+     console.log("N: ", JSON.stringify(n.value));
+     }*/
 
-    for(let v of mypq){
-        sum+=v.val;
-    }
+    /*for(let v of mypq){
+     sum+=v.val;
+     if(v.val < 8000){
+     break;
+     }
+     }*/
+
+    let aRes = Array.from(mypq);
+    //console.log("RESULT ARRAY:", JSON.stringify(aRes));
 
     //let g = mypq.pop();
     //console.log("======= G:", JSON.stringify(g));
 
     /*while (mypq.size() > 0) {
-        //console.log("POPPED:",mypq.pop());
-        let g = mypq.pop();
-        //console.log(g.val)
-        sum += g.val;
-        inner += 1;
-    }*/
+     //console.log("POPPED:",mypq.pop());
+     let g = mypq.pop();
+     //console.log(g.val)
+     sum += g.val;
+     inner += 1;
+     }*/
 
     looped += 1;
 }
