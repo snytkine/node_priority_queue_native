@@ -133,7 +133,7 @@ Using comparator function is slower because the module must convert this functio
 Performance will always be better if you can generate priority value when you adding item to queue and pass it as second parameter.
 
 #### Performance metric
-We have dome a very simple performance test, adding 50 objects to PriorityQueue using method 1 (no comparator function) and then converting the queue to array using Array.from(queue), which basically runs the .pop() 50 times, moving items from queue into the array
+We have done a very simple performance test, adding 50 objects to PriorityQueue using method 1 (no comparator function) and then converting the queue to array using Array.from(queue), which basically runs the .pop() 50 times, moving items from queue into the array
 
 These 2 steps - adding 100 items and converting to Array takes about half of a millisecond on a Macbook Pro
 
