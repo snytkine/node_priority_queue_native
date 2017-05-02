@@ -45,6 +45,8 @@ private:
 
     static void Top(const v8::FunctionCallbackInfo<v8::Value> &args);
 
+    static v8::Local<v8::Value> Top_(const v8::FunctionCallbackInfo<v8::Value> &args);
+
     static void Pop(const v8::FunctionCallbackInfo<v8::Value> &args);
 
     static void Size(const v8::FunctionCallbackInfo<v8::Value> &args);

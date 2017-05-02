@@ -22,6 +22,7 @@ PriorityQ::PriorityQ() {
 
 
 PriorityQ::PriorityQ(Isolate *isolate, Local<Function> cmp) {
+
     HandleScope handle_scope(isolate);
     LOGD("Setting up comparotor")
     if (cmp.IsEmpty()) {
@@ -164,89 +165,69 @@ void PriorityQ::Push(const v8::FunctionCallbackInfo<v8::Value> &args) {
 }
 
 
-void PriorityQ::Pop(const v8::FunctionCallbackInfo<v8::Value> &args) {
-    Isolate *isolate = args.GetIsolate();
-    PriorityQ *obj = Unwrap<PriorityQ>(args.Holder());
+Local<Value> PriorityQ::Top_(const v8::FunctionCallbackInfo<v8::Value> &args) {
 
-    // Very important to check size first
-    // if queue is empty then calling top and pop
-    // will result in segmentation fault
-    // wrapping this inside native try/catch will not help
+    Isolate *isolate = args.GetIsolate();
+    EscapableHandleScope my_handle_scope(isolate);
+    PriorityQ *obj = Unwrap<PriorityQ>(args.Holder());
+    //Local<Value> ret;
+
     if (obj->hq_->size() > 0) {
-        LOGD("Inside Pop :: Have items in queue")
-        // if we have intermediate copy obj->hq_->top()
-        // and then use it to Get(isolate) then destructor may be called on that intermediate UniquePersistent
-        // because it's not moved, its copied, and then it will reset the actual stored object in v8
-        // if we want to use intermediate object then we must use move assignment instead of copy assignment
+        LOGD("Inside Top :: Have items in queue")
 
         Local<Value> lo = obj->hq_->top()->cpo.Get(isolate);
         LocalType t = obj->hq_->top()->T_;
 
-        LOGD("Before hq_->pop()")
 
-        obj->hq_->pop();
-        // call .Reset on cpo because we not going to need it anymore
-        // because it was just gone from the queue!
-        // Except that in case of UniquePersistent there is already a destructor that calls Reset and it will be called
-        // when element is removed from que. To be 100% safe we can check if cpo.IsEmpty()
-        // but that would only work with intermediate objects.
         switch (t) {
             case LocalType::NUMBER: LOGD("RETURNING AS NUMBER")
-                args.GetReturnValue().Set(lo->ToNumber(isolate));
+                //args.GetReturnValue().Set(lo->ToNumber(isolate));
+                return my_handle_scope.Escape(lo->ToNumber(isolate));
                 break;
 
             case LocalType::STRING: LOGD("RETURNING AS STRING")
-                args.GetReturnValue().Set(lo->ToString(isolate));
+                //args.GetReturnValue().Set(lo->ToString(isolate));
+                return my_handle_scope.Escape(lo->ToString(isolate));
                 break;
 
             case LocalType::BOOLEAN: LOGD("RETURNING AS BOOLEAN")
-                args.GetReturnValue().Set(lo->ToBoolean(isolate));
+                //args.GetReturnValue().Set(lo->ToBoolean(isolate));
+                return my_handle_scope.Escape(lo->ToBoolean(isolate));
                 break;
 
             default: LOGD("RETURNING AS OBJECT")
-                args.GetReturnValue().Set(lo->ToObject(isolate));
+                //args.GetReturnValue().Set(lo->ToObject(isolate));
+                return my_handle_scope.Escape(lo->ToObject(isolate));
 
         }
 
-
     } else {
-        LOGD("NO ITEMS IN QUEUE")
-
+        LOGD("NO ITEMS IN QUEUE. WILL RETURN UNDEFINED TO TOP")
+        return my_handle_scope.Escape(Undefined(isolate));
     }
 
 }
 
 
 void PriorityQ::Top(const v8::FunctionCallbackInfo<v8::Value> &args) {
-    Isolate *isolate = args.GetIsolate();
+
+    args.GetReturnValue().Set(Top_(args));
+
+}
+
+
+void PriorityQ::Pop(const v8::FunctionCallbackInfo<v8::Value> &args) {
+    LOGD("ENTERED POP");
     PriorityQ *obj = Unwrap<PriorityQ>(args.Holder());
 
+    // Very important to check size first
+    // if queue is empty then calling top and pop
+    // will result in segmentation fault
+    // wrapping this inside native try/catch will not help
+    args.GetReturnValue().Set(Top_(args));
     if (obj->hq_->size() > 0) {
-        LOGD("Inside Top :: Have items in queue")
-        Local<Value> lo = obj->hq_->top()->cpo.Get(isolate);
-        LocalType t = obj->hq_->top()->T_;
 
-
-        switch (t) {
-            case LocalType::NUMBER: LOGD("RETURNING AS NUMBER")
-                args.GetReturnValue().Set(lo->ToNumber(isolate));
-                break;
-
-            case LocalType::STRING: LOGD("RETURNING AS STRING")
-                args.GetReturnValue().Set(lo->ToString(isolate));
-                break;
-
-            case LocalType::BOOLEAN: LOGD("RETURNING AS BOOLEAN")
-                args.GetReturnValue().Set(lo->ToBoolean(isolate));
-                break;
-
-            default: LOGD("RETURNING AS OBJECT")
-                args.GetReturnValue().Set(lo->ToObject(isolate));
-
-        }
-        
-    } else {
-        LOGD("NO ITEMS IN QUEUE. WILL RETURN UNDEFINED TO TOP")
+        obj->hq_->pop();
     }
 
 }
@@ -268,7 +249,6 @@ void PriorityQ::Size(const v8::FunctionCallbackInfo<v8::Value> &args) {
 void PriorityQ::GetIterator(const v8::FunctionCallbackInfo<v8::Value> &args) {
 
     args.GetReturnValue().Set(args.This());
-
 }
 
 
@@ -279,19 +259,16 @@ void PriorityQ::Next(const FunctionCallbackInfo<Value> &args) {
 
     Local<Object> retObj = Object::New(isolate);
 
+    Local<Value> lv;
 
     if (obj->hq_->size() > 0) {
         LOGD("Inside Pop :: Have items in queue")
-
-
-        Local<Value> lo = obj->hq_->top()->cpo.Get(isolate);
-        LOGD("Before hq_->pop()")
-
+        lv = Top_(args);
         obj->hq_->pop();
         // now we must create local object with properties that iterator
         // is expected to return
         //
-        retObj->Set(String::NewFromUtf8(isolate, ITER_VALUE), lo);
+        retObj->Set(String::NewFromUtf8(isolate, ITER_VALUE), lv);
         retObj->Set(String::NewFromUtf8(isolate, ITER_DONE), Boolean::New(isolate, false));
 
 

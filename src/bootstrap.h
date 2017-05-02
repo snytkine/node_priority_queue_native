@@ -9,7 +9,7 @@
 #include <v8.h>
 #include <iostream>
 
-#define DEBUG 1
+#define DEBUG 0
 
 enum class LocalType {
     NUMBER, STRING, BOOLEAN, OBJECT, _
