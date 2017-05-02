@@ -1,7 +1,22 @@
 "use strict";
 var priorityqueue_native_1 = require("priorityqueue_native");
 var gh = new priorityqueue_native_1.PriorityQueue();
-var gh2 = new priorityqueue_native_1.PriorityQueueCompare(function (left, right) { return left.priority < right.priority; });
-gh.push({ val: 3, priority: 4 }, 4);
-gh2.push({ val: 5, priority: 4 });
+var gh2 = new priorityqueue_native_1.PriorityQueueCompare(function (left, right) { return left < right; });
+gh2.push(true);
+gh2.push("CAT");
+gh2.push("DOG");
+gh2.push(function () {
+    console.log("I WAS ADDED AS A FUNCTION");
+    return "FUNCTION CALLED!";
+});
 console.log("in 2 size: ", gh2.size());
+console.log("TOP: ", gh2.top());
+console.log("TOP AGAIN: ", gh2.top());
+console.log("size after TOP: ", gh2.size());
+//let aBC = Array.from(gh2);
+var it = gh2[Symbol.iterator]();
+console.log("NEXT: ", it.next());
+console.log("NEXT2: ", it.next());
+console.log("NEXT3: ", it.next());
+console.log("C: ", gh2.pop());
+console.log("C", gh2.pop());

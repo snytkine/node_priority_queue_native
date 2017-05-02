@@ -170,33 +170,34 @@ Local<Value> PriorityQ::Top_(const v8::FunctionCallbackInfo<v8::Value> &args) {
     Isolate *isolate = args.GetIsolate();
     EscapableHandleScope my_handle_scope(isolate);
     PriorityQ *obj = Unwrap<PriorityQ>(args.Holder());
-    //Local<Value> ret;
 
+
+    // Very important to check size first
+    // if queue is empty then calling top and pop
+    // will result in segmentation fault
+    // wrapping this inside native try/catch will not help
     if (obj->hq_->size() > 0) {
         LOGD("Inside Top :: Have items in queue")
 
-        Local<Value> lo = obj->hq_->top()->cpo.Get(isolate);
-        LocalType t = obj->hq_->top()->T_;
-
+        auto top = obj->hq_->top();
+        Local<Value> lo = top->cpo.Get(isolate);
+        LocalType t = top->T_;
 
         switch (t) {
-            case LocalType::NUMBER: LOGD("RETURNING AS NUMBER")
-                //args.GetReturnValue().Set(lo->ToNumber(isolate));
+            case LocalType::NUMBER:
+                LOGD("RETURNING AS NUMBER")
                 return my_handle_scope.Escape(lo->ToNumber(isolate));
-                break;
 
-            case LocalType::STRING: LOGD("RETURNING AS STRING")
-                //args.GetReturnValue().Set(lo->ToString(isolate));
+            case LocalType::STRING:
+                LOGD("RETURNING AS STRING")
                 return my_handle_scope.Escape(lo->ToString(isolate));
-                break;
 
-            case LocalType::BOOLEAN: LOGD("RETURNING AS BOOLEAN")
-                //args.GetReturnValue().Set(lo->ToBoolean(isolate));
+            case LocalType::BOOLEAN:
+                LOGD("RETURNING AS BOOLEAN")
                 return my_handle_scope.Escape(lo->ToBoolean(isolate));
-                break;
 
-            default: LOGD("RETURNING AS OBJECT")
-                //args.GetReturnValue().Set(lo->ToObject(isolate));
+            default:
+                LOGD("RETURNING AS OBJECT")
                 return my_handle_scope.Escape(lo->ToObject(isolate));
 
         }
@@ -220,10 +221,6 @@ void PriorityQ::Pop(const v8::FunctionCallbackInfo<v8::Value> &args) {
     LOGD("ENTERED POP");
     PriorityQ *obj = Unwrap<PriorityQ>(args.Holder());
 
-    // Very important to check size first
-    // if queue is empty then calling top and pop
-    // will result in segmentation fault
-    // wrapping this inside native try/catch will not help
     args.GetReturnValue().Set(Top_(args));
     if (obj->hq_->size() > 0) {
 
@@ -242,7 +239,6 @@ void PriorityQ::Size(const v8::FunctionCallbackInfo<v8::Value> &args) {
     size_t sz = obj->hq_->size();
 
     args.GetReturnValue().Set(Number::New(isolate, sz));
-
 }
 
 

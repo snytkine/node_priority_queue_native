@@ -1,4 +1,4 @@
-const pq = require('../src/build/Release/node_pq');
+const pq = require('priorityqueue_native');
 const makeObjects = require('./data')
 var microtime = require('microtime')
 
@@ -36,7 +36,7 @@ for (let i = 0; i < 1; i += 1) {
      });*/
 
 
-    let mypq = new pq.PriorityQueueNative();
+    let mypq = new pq.PriorityQueue();
     objcts.forEach(o => mypq.push(o, o.val));
 
     //let it = mypq[Symbol.iterator]();
