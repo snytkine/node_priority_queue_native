@@ -6,11 +6,14 @@
 #### Introduction
 A priority queue is a data storage container where you can add items and get items back one at a time.
 
-The order of items will be from highest priority to lowest. That of cause is the main feature of priority queue - regardless of insertion order of items the highest priority item is always at the top of the queue. After you get the highest priority item using pop() method the highest priority from remaining items is at the top of queue again, and so on until the queue is empty.
+The order of items will be from highest priority to lowest.
+That of cause is the main feature of priority queue - regardless of the insertion order of items
+the highest priority item is always at the top of the queue.
+After you get the highest priority item from queue using the pop() method, the highest priority item from the remaining items is at the top of queue again, and so on until the queue is empty.
 
-When there are no items left in queue calling the size() will return 0 and calling top() or pop() will return undefined
+When there are no more items left in queue calling the size() method will return 0 and calling top() or pop() will return undefined
 
-Object created by this module also Iterable
+Object created by this module also Iterable, meaning you can iterate over the queue using for..of loop
 
 
 ### Usage
