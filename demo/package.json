@@ -5,9 +5,11 @@
   "description": "demo of priorityqueue_native",
   "author": "Dmitri Snytkine",
   "dependencies": {
-    "priorityqueue_native": "file:../src"
+    "microtime": "^2.1.3",
+    "priorityqueue_native": "file:../"
   },
   "devDependencies": {
+    "microtime": "latest",
     "@types/node": "^7.0.12"
   }
 }

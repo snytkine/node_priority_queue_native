@@ -21,36 +21,22 @@ var microtime = require('microtime')
  mypq.push({"my": 444.2}, 444.2);
  */
 
-let objcts = makeObjects(50);
+let objcts = makeObjects(100);
 let start = microtime.now();
 
 let sum = 0.0;
 let looped = 0;
 let inner = 0;
-
+let aRes;
 for (let i = 0; i < 1; i += 1) {
 
-    let mypq = new pq.PriorityQueue(function (lhs, rhs) {
+   /* let mypq = new pq.PriorityQueue(function (lhs, rhs) {
      return lhs.val < rhs.val
-     });
+     });*/
 
 
-    //let mypq = new pq.PriorityQueue();
-    objcts.forEach(o => mypq.push(o));
-
-
-    todos.push({"task": "Wash Dishes", "category":"house", "priority": 2});
-    todos.push({"task": "Math homework", "category":"school", "priority": 4});
-    todos.push({"task": "History paper", "category":"school", "priority": 3});
-    todos.push({"task": "Walk the dog", "category":"other", "priority": 5});
-    todos.push({"task": "Rotate tires", "category":"car", "priority": 1});
-
-
-    mypq.push({"player":"Steve", "score": 43});
-    mypq.push({"player":"George", "score": 65});
-    mypq.push({"player":"Bob", "score": 21});
-    mypq.push({"player":"Mike", "score": 77});
-    mypq.push({"player":"Anna", "score": 76});
+    let mypq = new pq.PriorityQueue();
+    objcts.forEach(o => mypq.push(o, o.val));
 
 
 
@@ -76,7 +62,7 @@ for (let i = 0; i < 1; i += 1) {
      }
      }*/
 
-    let aRes = Array.from(mypq);
+    aRes = Array.from(mypq);
     //console.log("RESULT ARRAY:", JSON.stringify(aRes));
 
     //let g = mypq.pop();
@@ -95,8 +81,9 @@ for (let i = 0; i < 1; i += 1) {
 
 let end = microtime.now();
 let total = end - start;
-console.log("FINISHED PUSH/POP objects per loop:", 50, "total time: ", total, " Looped: ", looped, "inner: ", inner);
+console.log("FINISHED PUSH/POP objects per loop:", objcts.length, "total time: ", total, " Looped: ", looped, "inner: ", inner);
 console.log("SUM=", sum);
+console.log("aRes:", JSON.stringify(aRes));
 
 
 //let extraOne = mypq.pop();

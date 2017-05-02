@@ -11,7 +11,7 @@
   },
   "files": [
     "src/index.d.ts",
-    "src/binding.gyp",
+    "binding.gyp",
     "src/*.cpp",
     "src/*.h"
   ],
@@ -22,5 +22,8 @@
     "priority queue",
     "performance"
   ],
+  "scripts": {
+    "install": "node-gyp rebuild"
+  },
   "description": "Priority Queue Container using C++ std::priority_queue library"
 }

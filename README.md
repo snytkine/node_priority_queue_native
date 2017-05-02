@@ -6,14 +6,11 @@
 #### Introduction
 A priority queue is a data storage container where you can add items and get items back one at a time.
 
-The order of items will be from highest priority to lowest.
-That of cause is the main feature of priority queue - regardless of the insertion order of items
-the highest priority item is always at the top of the queue.
-After you get the highest priority item from queue using the pop() method, the highest priority item from the remaining items is at the top of queue again, and so on until the queue is empty.
+The order of items will be from highest priority to lowest. That of cause is the main feature of priority queue - regardless of insertion order of items the highest priority item is always at the top of the queue. After you get the highest priority item using pop() method the highest priority from remaining items is at the top of queue again, and so on until the queue is empty.
 
-When there are no more items left in queue calling the size() method will return 0 and calling top() or pop() will return undefined
+When there are no items left in queue calling the size() will return 0 and calling top() or pop() will return undefined
 
-Object created by this module also Iterable, meaning you can iterate over the queue using for..of loop
+Object created by this module also Iterable
 
 
 ### Usage
@@ -134,3 +131,10 @@ Using the first example, passing the priority value as second parameter to queue
 Using comparator function is slower because the module must convert this function into persistent object and then every time it has to compare items it must convert that function back to native JS object, then convert 2 items from format stored in c++ into native JS object and then run the JS function inside C++ code. It's not too bad, it's still fast, as fast as any other priority queue node.js module that is written in JavaScript
 
 Performance will always be better if you can generate priority value when you adding item to queue and pass it as second parameter.
+
+#### Performance metric
+We have dome a very simple performance test, adding 50 objects to PriorityQueue using method 1 (no comparator function) and then converting the queue to array using Array.from(queue), which basically runs the .pop() 50 times, moving items from queue into the array
+
+These 2 steps - adding 100 items and converting to Array takes about half of a millisecond on a Macbook Pro
+
+
