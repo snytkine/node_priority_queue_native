@@ -1,0 +1,26 @@
+{
+  "name": "priorityqueue_native",
+  "version": "0.0.3",
+  "main": "./build/Release/priorityqueue_native",
+  "gypfile": true,
+  "author": "Dmitri Snytkine",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snytkine/node_priority_queue_native"
+  },
+  "files": [
+    "src/index.d.ts",
+    "src/binding.gyp",
+    "src/*.cpp",
+    "src/*.h"
+  ],
+  "keywords": [
+    "heap",
+    "binary heap",
+    "data structure",
+    "priority queue",
+    "performance"
+  ],
+  "description": "Priority Queue Container using C++ std::priority_queue library"
+}

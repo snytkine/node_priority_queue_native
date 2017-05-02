@@ -1,13 +1,27 @@
 import {PriorityQueue, PriorityQueueCompare} from 'priorityqueue_native'
 
 interface item {
-    val: number
+    task: string
+    category: string
     priority: number
 }
 
+let todos: PriorityQueue<item> = new PriorityQueue<item>();
+
+todos.push({"task": "Wash Dishes", "category":"house", "priority": 2}, 2);
+todos.push({"task": "Math homework", "category":"school", "priority": 4}, 4);
+todos.push({"task": "History paper", "category":"school", "priority": 3}, 3);
+todos.push({"task": "Walk the dog", "category":"other", "priority": 5}, 5);
+todos.push({"task": "Rotate tires", "category":"car", "priority": 1}, 1);
 
 
-let gh: PriorityQueue<item> = new PriorityQueue<item>();
+let todos2: PriorityQueueCompare<item> = new PriorityQueueCompare<item>((left: item, right: item) => left.priority < right.priority);
+
+todos2.push({"task": "Wash Dishes", "category":"house", "priority": 2});
+todos2.push({"task": "Math homework", "category":"school", "priority": 4});
+todos2.push({"task": "History paper", "category":"school", "priority": 3});
+todos2.push({"task": "Walk the dog", "category":"other", "priority": 5});
+todos2.push({"task": "Rotate tires", "category":"car", "priority": 1});
 
 let gh2: PriorityQueueCompare<any> = new PriorityQueueCompare<any>((left: string, right: string) => left < right);
 

@@ -85,6 +85,45 @@ Comparator function must implement "less than" logic using first and second item
 ```
 You can use this queue the same way as in first example to get items or iterate over items.
 
+
+### TypeScript friendly!
+This module comes with index.d.ts type definition and is ready to be used in typescript project.
+
+In Typescript version this PriorityQueue is a generic class and actually there are 2 different classes - one for each implementation of the queue, with and without comparator function.
+
+Example of Typescript usage:
+
+```typescript
+import {PriorityQueue, PriorityQueueCompare} from 'priorityqueue_native'
+
+interface item {
+    task: string
+    category: string
+    priority: number
+}
+
+// Option 1 - no comparator function, passing priority to push() method
+let todos: PriorityQueue<item> = new PriorityQueue<item>();
+
+todos.push({"task": "Wash Dishes", "category":"house", "priority": 2}, 2);
+todos.push({"task": "Math homework", "category":"school", "priority": 4}, 4);
+todos.push({"task": "History paper", "category":"school", "priority": 3}, 3);
+todos.push({"task": "Walk the dog", "category":"other", "priority": 5}, 5);
+todos.push({"task": "Rotate tires", "category":"car", "priority": 1}, 1);
+
+
+// Option 2. With Comparator function:
+
+let todos2: PriorityQueueCompare<item> = new PriorityQueueCompare<item>((left: item, right: item) => left.priority < right.priority);
+
+todos2.push({"task": "Wash Dishes", "category":"house", "priority": 2});
+todos2.push({"task": "Math homework", "category":"school", "priority": 4});
+todos2.push({"task": "History paper", "category":"school", "priority": 3});
+todos2.push({"task": "Walk the dog", "category":"other", "priority": 5});
+todos2.push({"task": "Rotate tires", "category":"car", "priority": 1});
+```
+
+#
 ## Important Performance Considerations
 
 Using the first example, passing the priority value as second parameter to queue is faster that using comparator function. The reason for this is that the priority queue will store that number as native c++ value and comparing items will be super-fast.
@@ -92,5 +131,3 @@ Using the first example, passing the priority value as second parameter to queue
 Using comparator function is slower because the module must convert this function into persistent object and then every time it has to compare items it must convert that function back to native JS object, then convert 2 items from format stored in c++ into native JS object and then run the JS function inside C++ code. It's not too bad, it's still fast, as fast as any other priority queue node.js module that is written in JavaScript
 
 Performance will always be better if you can generate priority value when you adding item to queue and pass it as second parameter.
-
-
