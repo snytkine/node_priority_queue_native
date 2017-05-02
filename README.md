@@ -1,4 +1,4 @@
-# priorityqueue_native is a priority queue backed by the C++ std::priority_queue
+# priorityqueue_native is a node.js module implementing priority_queue container backed by the C++ std::priority_queue
 
 ##### This module uses ES6 Iterable interface (for..of) loop and requires at least version 6 of Node.js or older version using --harmony option when starting older node.js
 ####
