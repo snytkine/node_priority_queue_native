@@ -6,3 +6,4 @@ demo/node_modules/
 *.tgz
 *.zip
 httpd.conf
+qtest.*

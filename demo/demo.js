@@ -30,14 +30,29 @@ let inner = 0;
 
 for (let i = 0; i < 1; i += 1) {
 
-    /*let mypq = new pq.PriorityQueueNative(function (lhs, rhs) {
-     //console.log("Called comparator with lhs:", lhs.val, " rhs: ", rhs.val)
+    let mypq = new pq.PriorityQueue(function (lhs, rhs) {
      return lhs.val < rhs.val
-     });*/
+     });
 
 
-    let mypq = new pq.PriorityQueue();
-    objcts.forEach(o => mypq.push(o, o.val));
+    //let mypq = new pq.PriorityQueue();
+    objcts.forEach(o => mypq.push(o));
+
+
+    todos.push({"task": "Wash Dishes", "category":"house", "priority": 2});
+    todos.push({"task": "Math homework", "category":"school", "priority": 4});
+    todos.push({"task": "History paper", "category":"school", "priority": 3});
+    todos.push({"task": "Walk the dog", "category":"other", "priority": 5});
+    todos.push({"task": "Rotate tires", "category":"car", "priority": 1});
+
+
+    mypq.push({"player":"Steve", "score": 43});
+    mypq.push({"player":"George", "score": 65});
+    mypq.push({"player":"Bob", "score": 21});
+    mypq.push({"player":"Mike", "score": 77});
+    mypq.push({"player":"Anna", "score": 76});
+
+
 
     //let it = mypq[Symbol.iterator]();
     //let done = false;
