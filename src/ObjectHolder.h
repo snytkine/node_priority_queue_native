@@ -14,11 +14,13 @@
 #include "bootstrap.h"
 
 
+
+
 class QObjectHolder {
 
 public:
 
-    QObjectHolder(double p, v8::Isolate *isolate, v8::Local<v8::Object> lo);
+    QObjectHolder(double p, v8::Isolate *isolate, v8::Local<v8::Value> lo, LocalType t);
     //QObjectHolder(double p, CopyablePersistentObject o);
 
     QObjectHolder(const QObjectHolder &qoh2);
@@ -27,8 +29,9 @@ public:
 
     ~QObjectHolder();
 
-    CopyablePersistentObject cpo;
+    CopyablePersistentValue cpo;
     double priority;
+    LocalType T_;
     v8::Isolate *isolate_;
 
 };

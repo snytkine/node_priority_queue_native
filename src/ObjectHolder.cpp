@@ -5,7 +5,7 @@
 #include "ObjectHolder.h"
 
 
-QObjectHolder::QObjectHolder(double p, v8::Isolate *isolate, v8::Local<v8::Object> lo) : priority(p) {
+QObjectHolder::QObjectHolder(double p, v8::Isolate *isolate, v8::Local<v8::Value> lo, LocalType t) : priority(p), T_(t) {
 
     LOGD("ObjectHolder Constructor Called")
 

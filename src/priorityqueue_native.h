@@ -52,6 +52,8 @@ private:
     static void GetIterator(const v8::FunctionCallbackInfo<v8::Value> &args);
 
 
+    //std::pair<LocalType, Local<Value>> top_(Isolate* isolate, std::shared_ptr<HolderQ> hq);
+
     static v8::Persistent<v8::Function> constructor;
     bool hasComparator_ = false;
 

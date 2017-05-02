@@ -9,7 +9,11 @@
 #include <v8.h>
 #include <iostream>
 
+#define DEBUG 1
 
+enum class LocalType {
+    NUMBER, STRING, BOOLEAN, OBJECT, _
+};
 
 inline void NODE_SET_ITERATOR_METHOD(v8::Local<v8::FunctionTemplate> recv,
                                       v8::FunctionCallback callback) {
@@ -23,7 +27,7 @@ inline void NODE_SET_ITERATOR_METHOD(v8::Local<v8::FunctionTemplate> recv,
     recv->PrototypeTemplate()->Set(v8::Symbol::GetIterator(isolate), t);
 }
 
-#define DEBUG 0
+
 
 static const char ITER_NEXT[] = "next";
 static const char ITER_VALUE[] = "value";
@@ -40,6 +44,7 @@ static const char ITER_DONE[] = "done";
 
 typedef v8::Persistent<v8::Object, v8::CopyablePersistentTraits<v8::Object>> CopyablePersistent;
 
+typedef v8::UniquePersistent<v8::Value> CopyablePersistentValue;
 typedef v8::UniquePersistent<v8::Object> CopyablePersistentObject;
 //typedef v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> CopyablePersistentFunction;
 

@@ -12,7 +12,7 @@ Persistent<Function> PriorityQ::constructor;
 
 PriorityQ::PriorityQ() {
 
-    auto compare = [&](const std::shared_ptr<QObjectHolder> &lhs, const std::shared_ptr<QObjectHolder> &rhs) -> bool {
+    auto compare = [](const std::shared_ptr<QObjectHolder> &lhs, const std::shared_ptr<QObjectHolder> &rhs) -> bool {
 
         return lhs->priority < rhs->priority;
     };
@@ -51,11 +51,11 @@ PriorityQ::PriorityQ(Isolate *isolate, Local<Function> cmp) {
         LOGD("CP AFTER CAST")
         Handle<Value> argv[2];
 
-        Local<Object> o1 = lhs->cpo.Get(isolate);
+        Local<Value> o1 = lhs->cpo.Get(isolate);
         argv[0] = o1;
         LOGD("AFTER ARG0")
 
-        Local<Object> o2 = rhs->cpo.Get(isolate);
+        Local<Value> o2 = rhs->cpo.Get(isolate);
         argv[1] = o2;
         LOGD("ADTER ARG2")
 
@@ -79,7 +79,7 @@ void PriorityQ::Init(v8::Local<v8::Object> exports) {
 
     // Prepare constructor template
     Local<FunctionTemplate> tpl = FunctionTemplate::New(isolate, New);
-    tpl->SetClassName(String::NewFromUtf8(isolate, "PriorityQueueNative"));
+    tpl->SetClassName(String::NewFromUtf8(isolate, "priority_queue_native"));
     tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
     NODE_SET_PROTOTYPE_METHOD(tpl, "push", Push);
@@ -134,7 +134,23 @@ void PriorityQ::Push(const v8::FunctionCallbackInfo<v8::Value> &args) {
     Isolate *isolate = args.GetIsolate();
     PriorityQ *obj = Unwrap<PriorityQ>(args.Holder());
     double d = 0;
-    Local<Object> lo = args[0]->ToObject(isolate);
+    LocalType t;
+    Local<Value> lo;
+    if (args[0]->IsNumber()) {
+        t = LocalType::NUMBER;
+        lo = args[0]->ToNumber(isolate);
+    } else if (args[0]->IsString()) {
+        t = LocalType::STRING;
+        lo = args[0]->ToString(isolate);
+    } else if (args[0]->IsBoolean()) {
+        t = LocalType::BOOLEAN;
+        lo = args[0]->ToBoolean(isolate);
+    } else {
+        t = LocalType::OBJECT;
+        lo = args[0]->ToObject(isolate);
+    }
+
+
     // Check for second arg requirements
     // its required ONLY if there is no comparator
     if (!obj->hasComparator_) {
@@ -143,7 +159,7 @@ void PriorityQ::Push(const v8::FunctionCallbackInfo<v8::Value> &args) {
         LOGD2("~ Adding to hq_ with priority=", d);
     }
 
-    obj->hq_->push(std::make_shared<QObjectHolder>(d, isolate, lo));
+    obj->hq_->push(std::make_shared<QObjectHolder>(d, isolate, lo, t));
     LOGD("Item pushed to queue");
 }
 
@@ -163,7 +179,9 @@ void PriorityQ::Pop(const v8::FunctionCallbackInfo<v8::Value> &args) {
         // because it's not moved, its copied, and then it will reset the actual stored object in v8
         // if we want to use intermediate object then we must use move assignment instead of copy assignment
 
-        Local<Object> lo = obj->hq_->top()->cpo.Get(isolate);
+        Local<Value> lo = obj->hq_->top()->cpo.Get(isolate);
+        LocalType t = obj->hq_->top()->T_;
+
         LOGD("Before hq_->pop()")
 
         obj->hq_->pop();
@@ -172,8 +190,24 @@ void PriorityQ::Pop(const v8::FunctionCallbackInfo<v8::Value> &args) {
         // Except that in case of UniquePersistent there is already a destructor that calls Reset and it will be called
         // when element is removed from que. To be 100% safe we can check if cpo.IsEmpty()
         // but that would only work with intermediate objects.
+        switch (t) {
+            case LocalType::NUMBER: LOGD("RETURNING AS NUMBER")
+                args.GetReturnValue().Set(lo->ToNumber(isolate));
+                break;
 
-        args.GetReturnValue().Set(lo);
+            case LocalType::STRING: LOGD("RETURNING AS STRING")
+                args.GetReturnValue().Set(lo->ToString(isolate));
+                break;
+
+            case LocalType::BOOLEAN: LOGD("RETURNING AS BOOLEAN")
+                args.GetReturnValue().Set(lo->ToBoolean(isolate));
+                break;
+
+            default: LOGD("RETURNING AS OBJECT")
+                args.GetReturnValue().Set(lo->ToObject(isolate));
+
+        }
+
 
     } else {
         LOGD("NO ITEMS IN QUEUE")
@@ -189,9 +223,28 @@ void PriorityQ::Top(const v8::FunctionCallbackInfo<v8::Value> &args) {
 
     if (obj->hq_->size() > 0) {
         LOGD("Inside Top :: Have items in queue")
+        Local<Value> lo = obj->hq_->top()->cpo.Get(isolate);
+        LocalType t = obj->hq_->top()->T_;
 
-        Local<Object> lo = obj->hq_->top()->cpo.Get(isolate);
-        args.GetReturnValue().Set(lo);
+
+        switch (t) {
+            case LocalType::NUMBER: LOGD("RETURNING AS NUMBER")
+                args.GetReturnValue().Set(lo->ToNumber(isolate));
+                break;
+
+            case LocalType::STRING: LOGD("RETURNING AS STRING")
+                args.GetReturnValue().Set(lo->ToString(isolate));
+                break;
+
+            case LocalType::BOOLEAN: LOGD("RETURNING AS BOOLEAN")
+                args.GetReturnValue().Set(lo->ToBoolean(isolate));
+                break;
+
+            default: LOGD("RETURNING AS OBJECT")
+                args.GetReturnValue().Set(lo->ToObject(isolate));
+
+        }
+        
     } else {
         LOGD("NO ITEMS IN QUEUE. WILL RETURN UNDEFINED TO TOP")
     }
@@ -231,7 +284,7 @@ void PriorityQ::Next(const FunctionCallbackInfo<Value> &args) {
         LOGD("Inside Pop :: Have items in queue")
 
 
-        Local<Object> lo = obj->hq_->top()->cpo.Get(isolate);
+        Local<Value> lo = obj->hq_->top()->cpo.Get(isolate);
         LOGD("Before hq_->pop()")
 
         obj->hq_->pop();
