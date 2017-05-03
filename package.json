@@ -16,11 +16,11 @@
     "src/*.h"
   ],
   "keywords": [
-    "heap",
-    "binary heap",
-    "data structure",
     "priority queue",
-    "performance"
+    "heap",
+    "min heap",
+    "max heap",
+    "native"
   ],
   "scripts": {
     "install": "node-gyp rebuild"
