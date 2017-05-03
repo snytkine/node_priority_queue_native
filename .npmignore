@@ -1,0 +1,11 @@
+.idea/
+/build/
+/cmake-build-debug/
+/demo/
+/node_modules/
+.DS_Store*
+httpd.conf
+CMakeLists.txt
+/src/node_modules/
+/src/qtest.cpp
+/src/tsconfig.json

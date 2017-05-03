@@ -1,6 +1,6 @@
 {
   "name": "priorityqueue_native",
-  "version": "0.0.3",
+  "version": "1.0.3",
   "main": "./build/Release/priorityqueue_native",
   "gypfile": true,
   "author": "Dmitri Snytkine",
@@ -8,6 +8,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/snytkine/node_priority_queue_native"
+  },
+  "engines": {
+    "node": ">=5.11.0"
   },
   "files": [
     "src/index.d.ts",

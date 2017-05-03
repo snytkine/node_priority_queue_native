@@ -19,6 +19,16 @@ Many programming languages have a implementation of priority queue as part of th
 
 This module just uses the C++ priority_queue library and exposes the Javascript object with methods and implementation similar to native C++ library. In addition this module exposes an Iterated via the Symbol.iterator() method which makes this object Iterable, so it can be used as source for spread operator, as source for Array.from or just iterated over in a for..of loop
 
+#
+### Installation
+```javascript
+npm install priorityqueue_native@latest
+```
+#
+### Dependencies
+This moduel does not depend on any other node.js modules; however this is a native module, meaning it it written in C++ and must be compiled by node.js
+As such, it expects the node-gyp to be installed (node-gyp comes with npm by default so usually you don't have to worry about installing node-gyp, unless you want to upgrade it, in which case [Read This](https://github.com/nodejs/node-gyp/wiki/Updating-npm's-bundled-node-gyp) ) and you must also have a c++ compiler on the machine. To intall compiler in Windows you need to install Visual Studio. To install C++ compiler on MAC OS you need to install [Xcode](https://developer.apple.com/xcode/)
+On Linux you need to have c++ compiler that supports C++ 11
 
 ### Usage
 - There are 2 ways to use priority queue:
@@ -140,8 +150,8 @@ Using comparator function is slower because the module must convert this functio
 Performance will always be better if you can generate priority value when you adding item to queue and pass it as second parameter.
 
 #### Performance metric
-We have dome a very simple performance test, adding 50 objects to PriorityQueue using method 1 (no comparator function) and then converting the queue to array using Array.from(queue), which basically runs the .pop() 50 times, moving items from queue into the array
+We have dome a very simple performance test, adding 100 objects to PriorityQueue using method 1 (no comparator function) and then converting the queue to array using Array.from(queue), which basically runs the .pop() 100 times, moving items from queue into the array
 
-These 2 steps - adding 100 items and converting to Array takes about half of a millisecond on a Macbook Pro
+These 2 steps - adding 100 items and converting to Array takes between 0.25 to 0.5 millisecond on a Macbook Pro
 
 
