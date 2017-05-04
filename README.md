@@ -129,7 +129,7 @@ todos.push({"task": "Walk the dog", "category":"other", "priority": 5}, 5);
 todos.push({"task": "Rotate tires", "category":"car", "priority": 1}, 1);
 
 
-// Option 2. With Comparator function:
+// Option 2. With Comparator function. Notice we use PriorityQueueCompare class for this one:
 
 let todos2: PriorityQueueCompare<item> = new PriorityQueueCompare<item>((left: item, right: item) => left.priority < right.priority);
 
@@ -148,6 +148,10 @@ Using the first example, passing the priority value as second parameter to queue
 Using comparator function is slower because the module must convert this function into persistent object and then every time it has to compare items it must convert that function back to native JS object, then convert 2 items from format stored in c++ into native JS object and then run the JS function inside C++ code. It's not too bad, it's still fast, as fast as any other priority queue node.js module that is written in JavaScript
 
 Performance will always be better if you can generate priority value when you adding item to queue and pass it as second parameter.
+
+#### IMPORTANT
+- If you pass comparator function to constructor when creating PriorityQueue then passing second argument to push() is ignored and comparator function will be used.
+- If you are not passing comparator function to constructor then passing the value of priority as second argument to push() is required.
 
 #### Performance metric
 We have dome a very simple performance test, adding 100 objects to PriorityQueue using method 1 (no comparator function) and then converting the queue to array using Array.from(queue), which basically runs the .pop() 100 times, moving items from queue into the array
