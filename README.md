@@ -1,8 +1,5 @@
 # priorityqueue_native is a node.js module implementing priority_queue container backed by the C++ std::priority_queue
 
-##### This module uses ES6 Iterable interface (for..of) loop and requires at least version 6 of Node.js or older version using --harmony option when starting older node.js
-####
-###
 #### Introduction
 A priority queue is a data storage container where you can add items and get items back one at a time.
 
@@ -26,9 +23,12 @@ npm install priorityqueue_native@latest
 ```
 #
 ### Dependencies
-This moduel does not depend on any other node.js modules; however this is a native module, meaning it it written in C++ and must be compiled by node.js
-As such, it expects the node-gyp to be installed (node-gyp comes with npm by default so usually you don't have to worry about installing node-gyp, unless you want to upgrade it, in which case [Read This](https://github.com/nodejs/node-gyp/wiki/Updating-npm's-bundled-node-gyp) ) and you must also have a c++ compiler on the machine. To intall compiler in Windows you need to install Visual Studio. To install C++ compiler on MAC OS you need to install [Xcode](https://developer.apple.com/xcode/)
+- Minimum version of Node is 5.11.0
+- This moduel does not depend on any other node.js modules; however this is a native module, meaning it it written in C++ and must be compiled by node.js
+As such, it expects the node-gyp to be installed (*** node-gyp comes with npm by default so usually you don't have to worry about installing node-gyp ***, unless you want to upgrade it, in which case [Read This](https://github.com/nodejs/node-gyp/wiki/Updating-npm's-bundled-node-gyp) ) and you must also have a c++ compiler on the machine. To intall compiler in Windows you need to install Visual Studio. To install C++ compiler on MAC OS you need to install [Xcode](https://developer.apple.com/xcode/)
 On Linux you need to have c++ compiler that supports C++ 11
+- To use the "for..of" iterator feature Node 6.0 or higher is required. It may work with lower versions with --harmony flag but we cannot guarantee it.
+
 
 ### Usage
 - There are 2 ways to use priority queue:
