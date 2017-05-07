@@ -1,4 +1,5 @@
-# priorityqueue_native is a node.js module implementing priority_queue container backed by the C++ std::priority_queue
+### priorityqueue_native is a node.js module implementing priority_queue container backed by the C++ std::priority_queue
+
 
 #### Introduction
 A priority queue is a data storage container where you can add items and get items back one at a time.
@@ -9,12 +10,14 @@ The order of items will be from highest priority to lowest. That of cause is the
 
 When there are no items left in queue calling the size() will return 0 and calling top() or pop() will return undefined
 
-Object created by this module also Iterable
+Object created by this module is also Iterable
 
-Many programming languages have a implementation of priority queue as part of the language, but Javascript and node.js do not have one. There are several node.js modules written in JavaScript that provide functionality of Priority Queue but they all implement it differently. The C++ standard library had a priority queue implementation for a long time (over 20 years now).
+Many programming languages have a implementation of priority queue as part of the language, but Javascript and node.js do not have one.
+There are several node.js modules written in JavaScript that provide functionality of Priority Queue but they all implement it differently. The C++ standard library had a priority queue implementation for a long time (over 20 years now).
 [C++ std::priority_queue](https://en.wikipedia.org/wiki/Priority_queue)
 
-This module just uses the C++ priority_queue library and exposes the Javascript object with methods and implementation similar to native C++ library. In addition this module exposes an Iterated via the Symbol.iterator() method which makes this object Iterable, so it can be used as source for spread operator, as source for Array.from or just iterated over in a for..of loop
+This module just uses the C++ priority_queue library and exposes the Javascript object with methods and implementation similar to native C++ library.
+In addition this module exposes an Iterator via the Symbol.iterator() method which makes this object Iterable, so it can be used as source for spread operator, as source for Array.from or just iterated over in a for..of loop
 
 #
 ### Installation
@@ -25,7 +28,7 @@ npm install priorityqueue_native@latest
 ### Dependencies
 - Minimum version of Node is 5.11.0
 - This moduel does not depend on any other node.js modules; however this is a native module, meaning it it written in C++ and must be compiled by node.js
-As such, it expects the node-gyp to be installed (*** node-gyp comes with npm by default so usually you don't have to worry about installing node-gyp ***, unless you want to upgrade it, in which case [Read This](https://github.com/nodejs/node-gyp/wiki/Updating-npm's-bundled-node-gyp) ) and you must also have a c++ compiler on the machine. To intall compiler in Windows you need to install Visual Studio. To install C++ compiler on MAC OS you need to install [Xcode](https://developer.apple.com/xcode/)
+As such, it expects the node-gyp to be installed (***node-gyp comes with npm by default so usually you don't have to worry about installing node-gyp***, unless you want to upgrade it, in which case [Read This](https://github.com/nodejs/node-gyp/wiki/Updating-npm's-bundled-node-gyp) ) and you must also have a c++ compiler on the machine. To intall compiler in Windows you need to install Visual Studio. To install C++ compiler on MAC OS you need to install [Xcode](https://developer.apple.com/xcode/)
 On Linux you need to have c++ compiler that supports C++ 11
 - To use the "for..of" iterator feature Node 6.0 or higher is required. It may work with lower versions with --harmony flag but we cannot guarantee it.
 
